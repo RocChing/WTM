@@ -1,32 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WalkingTec.Mvvm.Core;
-using WalkingTec.Mvvm.Core.Extensions;
 using WalkingTec.Mvvm.Mvc;
 
 namespace WalkingTec.Mvvm.Doc.Controllers
 {
-    [Public]
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
         public IActionResult Index()
         {
             LoginUserInfo = new LoginUserInfo { ITCode = "admin" };
-            ViewData["title"] = "WalkingTec MVVM Framework";
-            ViewData["menu"] = FFMenus?.AsQueryable().GetTreeSelectListItems(null, null, x => x.PageName, null,null, x => x.Url, SortByName: false);
+            ViewData["title"] = "WTM";
             return View();
         }
 
-        [Public]
         public IActionResult PIndex()
         {
             return View();
         }
 
-        [AllRights]
         public IActionResult FrontPage()
         {
             return Redirect("/QuickStart/Intro");
+        }
+
+        [ActionDescription("捐赠名单")]
+        public IActionResult DonateList()
+        {
+            return PartialView();
+        }
+
+        [ActionDescription("Layout")]
+        public IActionResult Layout()
+        {
+            return PartialView();
         }
     }
 }

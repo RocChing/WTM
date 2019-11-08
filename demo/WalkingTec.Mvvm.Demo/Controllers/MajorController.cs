@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
 using WalkingTec.Mvvm.Core;
 using WalkingTec.Mvvm.Mvc;
 using WalkingTec.Mvvm.Demo.ViewModels.MajorVMs;
+using WalkingTec.Mvvm.Core.Extensions;
 
 namespace WalkingTec.Mvvm.Demo.Controllers
 {
-    
     [ActionDescription("专业管理（一对多）")]
     public class MajorController : BaseController
     {
@@ -17,6 +19,13 @@ namespace WalkingTec.Mvvm.Demo.Controllers
         {
             var vm = CreateVM<MajorListVM>();
             return PartialView(vm);
+        }
+
+        [ActionDescription("搜索")]
+        [HttpPost]
+        public string Search(MajorListVM vm)
+        {
+            return vm.GetJson(false);
         }
         #endregion
 
@@ -121,7 +130,7 @@ namespace WalkingTec.Mvvm.Demo.Controllers
         #region 批量修改
         [HttpPost]
         [ActionDescription("批量修改")]
-        public ActionResult BatchEdit(Guid[] IDs)
+        public ActionResult BatchEdit(string[] IDs)
         {
             var vm = CreateVM<MajorBatchVM>(Ids: IDs);
             return PartialView(vm);
@@ -145,7 +154,7 @@ namespace WalkingTec.Mvvm.Demo.Controllers
         #region 批量删除
         [HttpPost]
         [ActionDescription("批量删除")]
-        public ActionResult BatchDelete(Guid[] IDs)
+        public ActionResult BatchDelete(string[] IDs)
         {
             var vm = CreateVM<MajorBatchVM>(Ids: IDs);
             return PartialView(vm);

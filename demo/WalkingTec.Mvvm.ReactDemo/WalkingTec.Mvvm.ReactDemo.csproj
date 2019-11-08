@@ -12,9 +12,13 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
+  <Import Project="..\..\common.props" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.App">
+      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+      <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
@@ -64,30 +68,6 @@
     </ItemGroup>
   </Target>
 
-  <ItemGroup>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\css\*">
-      <Link>wwwroot\layui\css\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\css\modules\*">
-      <Link>wwwroot\layui\css\modules\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\css\modules\laydate\default\*">
-      <Link>wwwroot\layui\css\modules\laydate\default\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\css\modules\layer\default\*">
-      <Link>wwwroot\layui\css\modules\layer\default\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\font\*">
-      <Link>wwwroot\layui\font\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\images\face\*">
-      <Link>wwwroot\layui\images\face\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\layui\lay\modules\*">
-      <Link>wwwroot\layui\lay\modules\%(FileName)%(Extension)</Link>
-    </None>
-    <None Include="..\..\demo\WalkingTec.Mvvm.Demo\wwwroot\*">
-      <Link>wwwroot\%(FileName)%(Extension)</Link>
-    </None>
-  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
