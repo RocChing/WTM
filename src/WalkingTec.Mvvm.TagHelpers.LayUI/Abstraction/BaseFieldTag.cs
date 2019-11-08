@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
 using WalkingTec.Mvvm.Core;
@@ -83,22 +83,29 @@ namespace WalkingTec.Mvvm.TagHelpers.LayUI
             if (!(this is DisplayTagHelper) && !(this is CheckBoxTagHelper) && Field.Metadata.IsRequired)
             {
                 requiredDot = "<font color='red'>*</font>";
-                if (!(this is UploadTagHelper)) // 上传组件自定义验证
+                if (!(this is UploadTagHelper || this is RadioTagHelper || this is CheckBoxTagHelper)) // 上传组件自定义验证
                 {
-                    if (!_excludeType.Contains(output.Attributes["type"]?.Value?.ToString()))
+                    //richtextbox不需要进行必填验证
+                    if (output.Attributes["isrich"] == null)
                     {
-                        //richtextbox不需要进行必填验证
-                        if (output.Attributes["isrich"] == null)
-                        {
-                            output.Attributes.Add("lay-verify", "required");
-                        }
+                        var pro = Field?.Metadata.ContainerType.GetProperties().Where(x => x.Name == Field?.Metadata.PropertyName).FirstOrDefault();
+                        output.Attributes.Add("lay-verify", "required");
+                        output.Attributes.Add("lay-reqText", $"{Program._localizer["{0}required", pro.GetPropertyDisplayName()]}");
                     }
                 }
             }
 
             if (LabelText == null)
             {
-                LabelText = Field?.Metadata.DisplayName ?? Field?.Metadata.PropertyName;
+                var pro = Field?.Metadata.ContainerType.GetProperties().Where(x => x.Name == Field?.Metadata.PropertyName).FirstOrDefault();
+                if (pro != null)
+                {
+                    LabelText = pro.GetPropertyDisplayName();
+                }
+                else
+                {
+                    LabelText = Field?.Metadata.DisplayName ?? Field?.Metadata.PropertyName;
+                }
                 if (LabelText == null)
                 {
                     HideLabel = true;
@@ -142,8 +149,7 @@ namespace WalkingTec.Mvvm.TagHelpers.LayUI
             {
                 postHtml += $@"
     </div>
-<label class=""layui-form-label"" >{PaddingText}</label>
-</div>
+<div class=""layui-form-mid layui-word-aux"">{PaddingText}</div>
 ";
 
             }
